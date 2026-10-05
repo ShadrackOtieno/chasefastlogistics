@@ -55,7 +55,6 @@ jobs:
             --exclude-glob=.git/
             --exclude-glob=.git/**
             --exclude-glob=node_modules/
-            # --exclude-glob=vendor/
             --exclude-glob=.github/
             --exclude-glob=.env
             --exclude-glob=storage/app/public/

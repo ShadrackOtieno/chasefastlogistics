@@ -39,20 +39,49 @@
     </div>
 </section>
 
-<section class="mx-auto mt-24 grid max-w-7xl items-center gap-12 px-4 lg:grid-cols-2">
-    <div>
-        <h2 class="section-title">Experience that clears your cargo faster</h2>
-        <p class="mt-4 whitespace-pre-line leading-relaxed">{{ \Illuminate\Support\Str::before($site['about_intro'] ?? '', "\n\n") }}</p>
-        <a href="{{ route('about') }}" class="btn mt-6">About Chase Fast</a>
+<section class="mx-auto mt-24 max-w-7xl px-4">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+            <h2 class="section-title">Experience that clears your cargo faster</h2>
+            <p class="mt-4 whitespace-pre-line leading-relaxed">
+                {{ \Illuminate\Support\Str::before($site['about_intro'] ?? '', "\n\n") }}
+            </p>
+        </div>
+
+        <div class="rounded-2xl bg-navy p-8 text-white">
+            <h3 class="text-xl font-bold">Where we clear</h3>
+
+            <ul class="mt-5 space-y-3 text-sm">
+                @foreach ([
+                    'Jomo Kenyatta International Airport (JKIA)',
+                    'Mombasa Seaport',
+                    'Inland Container Depots: Nairobi & Kisumu',
+                    'Kenya borders with Uganda and Southern Sudan'
+                ] as $loc)
+                    <li class="flex gap-3">
+                        <x-icon name="check" class="h-4 w-4 shrink-0 text-brand" />
+                        {{ $loc }}
+                    </li>
+                @endforeach
+            </ul>
+
+            <div class="mt-6 border-t border-white/20 pt-5 text-sm text-white/80">
+                Need it moved? Call our hotline
+                <a
+                    class="font-semibold text-white underline"
+                    href="tel:{{ preg_replace('/\s+/', '', $site['hotline'] ?? '') }}"
+                >
+                    {{ $site['hotline'] ?? '' }}
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="rounded-2xl bg-navy p-8 text-white">
-        <h3 class="text-xl font-bold">Where we clear</h3>
-        <ul class="mt-5 space-y-3 text-sm">
-            @foreach (['Jomo Kenyatta International Airport (JKIA)', 'Mombasa Seaport', 'Inland Container Depots: Nairobi & Kisumu', 'Kenya borders with Uganda and Southern Sudan'] as $loc)
-                <li class="flex gap-3"><x-icon name="check" class="h-4 w-4 shrink-0 text-brand" />{{ $loc }}</li>
-            @endforeach
-        </ul>
-        <div class="mt-6 border-t border-white/20 pt-5 text-sm text-white/80">Need it moved? Call our hotline <a class="font-semibold text-white underline" href="tel:{{ preg_replace('/\s+/', '', $site['hotline'] ?? '') }}">{{ $site['hotline'] ?? '' }}</a></div>
+
+    <!-- Centered button across both columns -->
+    <div class="mt-8 flex justify-center">
+        <a href="{{ route('about') }}" class="btn">
+            About Chase Fast
+        </a>
     </div>
 </section>
 

@@ -77,20 +77,20 @@
     <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-4">
         <div>
             <img src="{{ asset('images/logo.png') }}" alt="" class="mb-4 h-14 rounded bg-white p-1">
-            <p class="text-sm font-semibold">{{ $site['company_name'] ?? '' }}</p>
-            <p class="mt-1 text-sm italic text-white/70">{{ $site['tagline'] ?? '' }}</p>
+            <p class="text-md font-semibold">{{ $site['company_name'] ?? '' }}</p>
+            <p class="mt-1 text-md italic text-white/70">{{ $site['tagline'] ?? '' }}</p>
         </div>
         <div>
-            <h3 class="mb-3 text-sm font-bold uppercase tracking-wider text-white/60">Services</h3>
-            <ul class="space-y-2 text-sm">
+            <h3 class="mb-3 text-md font-bold uppercase tracking-wider text-white/60">Services</h3>
+            <ul class="space-y-2 text-md">
                 @foreach ($footerServices as $s)
                     <li><a class="hover:underline" href="{{ route('services.show', $s) }}">{{ $s->title }}</a></li>
                 @endforeach
             </ul>
         </div>
         <div>
-            <h3 class="mb-3 text-sm font-bold uppercase tracking-wider text-white/60">Company</h3>
-            <ul class="space-y-2 text-sm">
+            <h3 class="mb-3 text-md font-bold uppercase tracking-wider text-white/60">Company</h3>
+            <ul class="space-y-2 text-md">
                 <li><a class="hover:underline" href="{{ route('about') }}">About us</a></li>
                 <li><a class="hover:underline" href="{{ route('rates') }}">Our rates</a></li>
                 <li><a class="hover:underline" href="{{ route('track') }}">Track a shipment</a></li>
@@ -98,8 +98,8 @@
                 <li><a class="hover:underline" href="{{ route('contact') }}">Contact</a></li>
             </ul>
         </div>
-        <div class="text-sm">
-            <h3 class="mb-3 text-sm font-bold uppercase tracking-wider text-white/60">Reach us</h3>
+        <div class="text-md">
+            <h3 class="mb-3 text-md font-bold uppercase tracking-wider text-white/60">Reach us</h3>
             <p><span class="font-semibold">Head office:</span> {{ $site['address_head_office'] ?? '' }}</p>
             <p class="mt-2"><span class="font-semibold">JKIA office:</span> {{ $site['address_jkia'] ?? '' }}</p>
             <p class="mt-2">{{ $site['po_box'] ?? '' }}</p>

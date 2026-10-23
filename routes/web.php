@@ -7,7 +7,12 @@ use App\Http\Controllers\QuoteRequestController;
 use App\Http\Controllers\ServicePageController;
 use App\Http\Controllers\TrackingController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
+Route::get('/link-storage', function () {
+    Artisan::call('storage:link');
+    return 'Storage link created successfully!';
+});
 /* ---------------------------- Front office ---------------------------- */
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');

@@ -32,11 +32,12 @@ class Shipment extends Model
         return self::STATUSES[$this->status] ?? ucfirst($this->status);
     }
 
-    public static function generateTrackingNumber(): string
-    {
-        do {
-            $n = 'CFL'.date('y').random_int(100000, 999999);
-        } while (static::where('tracking_number', $n)->exists());
-        return $n;
-    }
+public static function generateTrackingNumber(): string
+{
+    do {
+        $n = 'CFL/' . random_int(1000, 9999) . '/' . date('m') . '/' . date('Y');
+    } while (static::where('tracking_number', $n)->exists());
+
+    return $n;
+}
 }

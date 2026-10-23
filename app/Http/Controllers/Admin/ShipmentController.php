@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Mail\ShipmentCreated;
+use App\Mail\ShipmentUpdated;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use App\Models\Shipment;
 use App\Models\ShipmentEvent;
@@ -27,7 +29,7 @@ class ShipmentController extends Controller
         return view('admin.shipments.form', ['shipment' => new Shipment(['mode' => 'sea', 'status' => 'booked'])]);
     }
 
-    public function store(Request $request)
+  public function store(Request $request)
     {
         $data = $this->validated($request, null);
         $data['tracking_number'] = $data['tracking_number'] ?: Shipment::generateTrackingNumber();
@@ -40,6 +42,11 @@ class ShipmentController extends Controller
             'note' => 'Shipment created',
             'occurred_at' => now(),
         ]);
+
+        // Add this check and mail dispatch
+        if (!empty($shipment->customer_email)) {
+            Mail::to($shipment->customer_email)->send(new ShipmentCreated($shipment));
+        }
 
         return redirect()->route('admin.shipments.show', $shipment)->with('success', "Shipment {$shipment->tracking_number} created.");
     }
@@ -68,8 +75,7 @@ class ShipmentController extends Controller
         $shipment->delete();
         return redirect()->route('admin.shipments.index')->with('success', 'Shipment deleted.');
     }
-
-    public function storeEvent(Request $request, Shipment $shipment)
+public function storeEvent(Request $request, Shipment $shipment)
     {
         $data = $request->validate([
             'status' => ['required', Rule::in(array_keys(Shipment::STATUSES))],
@@ -78,8 +84,18 @@ class ShipmentController extends Controller
             'occurred_at' => 'required|date',
         ]);
 
-        $shipment->events()->create($data);
-        $shipment->update(['status' => $data['status'], 'current_location' => $data['location'] ?: $shipment->current_location]);
+        // Capture the created event
+        $event = $shipment->events()->create($data);
+
+        $shipment->update([
+            'status' => $data['status'],
+            'current_location' => $data['location'] ?: $shipment->current_location
+        ]);
+
+        // Add this check and mail dispatch
+        if (!empty($shipment->customer_email)) {
+            Mail::to($shipment->customer_email)->send(new ShipmentUpdated($shipment, $event));
+        }
 
         return back()->with('success', 'Tracking update added. Customers can now see it.');
     }

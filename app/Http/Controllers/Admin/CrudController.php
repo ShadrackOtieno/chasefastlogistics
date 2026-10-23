@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /**
  * Generic back-office CRUD. Child controllers only describe the model, the
@@ -104,7 +106,7 @@ abstract class CrudController extends Controller
                     if ($item && $item->{$name}) {
                         Storage::disk('public')->delete($item->{$name});
                     }
-                    $data[$name] = $request->file($name)->store($this->route, 'public');
+                    $data[$name] = $this->storeUpload($request->file($name));
                 }
             }
         }
@@ -113,5 +115,30 @@ abstract class CrudController extends Controller
         }
 
         return $this->prepare($data, $item);
+    }
+
+    /**
+     * Store an uploaded file on the public disk.
+     *
+     * Normal path: uses Laravel's store() (detects the extension from the file
+     * content, needs the PHP fileinfo extension).
+     * Fallback: when fileinfo is missing, builds the filename from the
+     * client-supplied extension, restricted to a safe allow-list, so uploads
+     * keep working. Remove the fallback once fileinfo is enabled on the server.
+     */
+    protected function storeUpload(UploadedFile $file): string
+    {
+        if (class_exists('finfo')) {
+            return $file->store($this->route, 'public');
+        }
+
+        $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'avif', 'ico'];
+        $ext = strtolower($file->getClientOriginalExtension());
+
+        if (!in_array($ext, $allowed, true)) {
+            $ext = 'jpg';
+        }
+
+        return $file->storeAs($this->route, Str::random(40) . '.' . $ext, 'public');
     }
 }

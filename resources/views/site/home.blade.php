@@ -7,7 +7,7 @@
     <div class="absolute inset-0 -z-10 bg-gradient-to-r from-navy via-navy/80 to-transparent"></div>
     <div class="mx-auto max-w-7xl px-4 py-24 sm:py-32">
         <h1 class="max-w-3xl text-4xl font-extrabold leading-tight sm:text-6xl">{{ $site['tagline'] ?? 'Your Cargo in Good and Safe Hands' }}</h1>
-        <p class="mt-5 max-w-2xl text-lg text-white/85">Air, sea and land freight, customs clearance and warehousing, handled by former customs officers at JKIA, Mombasa, ICD Nairobi &amp; Kisumu and the Kenya, Uganda and Southern Sudan borders.</p>
+        <p class="mt-5 max-w-2xl text-lg text-white/85">From international freight forwarding to customs clearance and supply chain coordination, we deliver integrated logistics solutions that help businesses move cargo across markets with confidence.</p>
         <div class="mt-8 flex flex-wrap gap-3">
             <a href="{{ route('quote.create') }}" class="btn">Request a Quote</a>
             <a href="{{ route('services.index') }}" class="btn-outline">Our Services</a>

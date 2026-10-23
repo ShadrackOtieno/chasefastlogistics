@@ -139,6 +139,16 @@ abstract class CrudController extends Controller
             $ext = 'jpg';
         }
 
-        return $file->storeAs($this->route, Str::random(40) . '.' . $ext, 'public');
+        // Bypass Laravel's storage layer (it calls finfo on write) and move the
+        // file directly into the public disk's folder.
+        $dir = Storage::disk('public')->path($this->route);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
+        $filename = Str::random(40) . '.' . $ext;
+        $file->move($dir, $filename);
+
+        return $this->route . '/' . $filename;
     }
 }
